@@ -28,7 +28,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void set(double speed) {
-    if(!(encoder.getPosition() < Constants.ARM_LOWER_LIMIT) && !(encoder.getPosition() > Constants.ARM_UPPER_LIMIT)) {
+    if((!(encoder.getPosition() < Constants.ARM_LOWER_LIMIT) && !(encoder.getPosition() > Constants.ARM_UPPER_LIMIT)) || (encoder.getPosition() < Constants.ARM_LOWER_LIMIT && speed > 0) || (encoder.getPosition() > Constants.ARM_LOWER_LIMIT && speed < 0)) {
       arm.set(speed);
     } else {
       arm.stopMotor();
@@ -42,7 +42,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if((encoder.getPosition() < Constants.ARM_LOWER_LIMIT) && (encoder.getPosition() > Constants.ARM_UPPER_LIMIT)) {
+    if(((encoder.getPosition() < Constants.ARM_LOWER_LIMIT) && (encoder.getPosition() > Constants.ARM_UPPER_LIMIT))  || !(encoder.getPosition() < Constants.ARM_LOWER_LIMIT && arm.get() > 0) || !(encoder.getPosition() > Constants.ARM_LOWER_LIMIT && arm.get() < 0)) {
       arm.stopMotor();
     }
   }

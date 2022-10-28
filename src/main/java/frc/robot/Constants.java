@@ -35,5 +35,9 @@ public final class Constants {
     public static final double ARM_UPPER_LIMIT = 9;
     public static final double ARM_LOWER_LIMIT = 0;
     public static final double ARM_SPEED = 0.1;
+
     public static final int JOYSTICK_NUMBER = 0;
+    public static final int XBOX_LEFT_X_AXIS = 2;
+    public static final double ARCADE_SPEED = 0.5;
+    public static final int XBOX_LEFT_Y_AXIS = 4;
 }

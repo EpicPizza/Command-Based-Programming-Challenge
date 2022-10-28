@@ -45,7 +45,9 @@ public class RobotContainer {
     driveDistance = new DriveDistance(driveTrain);
     driveDistance.addRequirements(driveTrain);
 
-    driveJoystick = new DriveJoystick(driveTrain);
+    driverJoystick = new XboxController(Constants.JOYSTICK_NUMBER);
+
+    driveJoystick = new DriveJoystick(driveTrain, driverJoystick);
     driveJoystick.addRequirements(driveTrain);
     driveTrain.setDefaultCommand(driveJoystick);
 
@@ -54,8 +56,6 @@ public class RobotContainer {
     indexer = new Indexer();
 
     intake = new Intake();
-
-    driverJoystick = new XboxController(Constants.JOYSTICK_NUMBER);
 
     // Configure the button bindings
     configureButtonBindings();

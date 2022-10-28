@@ -33,9 +33,9 @@ public class ArmPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(direction && arm.getPosition() < position) {
+    if(direction && arm.getPosition() <= position) {
       arm.set(Constants.ARM_SPEED);
-    } if(!direction && arm.getPosition() > position) {
+    } if(!direction && arm.getPosition() >= position) {
       arm.set(-Constants.ARM_SPEED);
     } else {
       arm.stop();

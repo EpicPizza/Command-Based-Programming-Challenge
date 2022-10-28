@@ -4,17 +4,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveJoystick extends CommandBase {
   private final DriveTrain driveTrain;
-  private final Joystick stick = new Joystick(Constants.JOYSTICK_PORT);
+  private final XboxController xboxController;
   /** Creates a new DriveJoystick. */
-  public DriveJoystick(DriveTrain dt) {
+  public DriveJoystick(DriveTrain dt, XboxController XboxController) {
     driveTrain = dt;
+    xboxController = XboxController;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
   }
@@ -26,8 +27,7 @@ public class DriveJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.setLeft((-stick.getY() - stick.getX()) / 2);
-    driveTrain.setRight((-stick.getY() + stick.getX()) / 2);
+    driveTrain.arcadeDrive(xboxController.getRawAxis(Constants.XBOX_LEFT_Y_AXIS) * Constants.ARCADE_SPEED, xboxController.getRawAxis(Constants.XBOX_LEFT_X_AXIS));
   }
 
   // Called once the command ends or is interrupted.

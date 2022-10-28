@@ -55,8 +55,7 @@ public class DriveDistance extends CommandBase {
         System.out.println("Acceleration Limited");
         speed = previousSpeed + (reverse * 0.01);
       } 
-      driveTrain.setLeft(speed);
-      driveTrain.setRight(speed);
+      driveTrain.set(speed);
       previousError = error;
       previousSpeed = speed;
       SmartDashboard.putNumber("Speed", speed);

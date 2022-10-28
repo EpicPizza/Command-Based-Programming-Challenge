@@ -16,7 +16,8 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax arm = new CANSparkMax(Constants.ARM_PORT, MotorType.kBrushless);
   RelativeEncoder encoder = arm.getEncoder();
   public Arm() {
-    arm.restoreFactoryDefaults();
+    arm.restoreFactoryDefaults(); //set direction
+    arm.setInverted(false);
   }
 
   public void reset() {
@@ -27,7 +28,7 @@ public class Arm extends SubsystemBase {
     return encoder.getPosition();
   }
 
-  public void set(double speed) {
+  public void set(double speed) { // use soft limits
     if((!(encoder.getPosition() < Constants.ARM_LOWER_LIMIT) && !(encoder.getPosition() > Constants.ARM_UPPER_LIMIT)) || (encoder.getPosition() < Constants.ARM_LOWER_LIMIT && speed > 0) || (encoder.getPosition() > Constants.ARM_LOWER_LIMIT && speed < 0)) {
       arm.set(speed);
     } else {

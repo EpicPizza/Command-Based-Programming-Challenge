@@ -4,43 +4,48 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import frc.robot.Constants;
 
-public class DriveTrain extends SubsystemBase {
-  private final TalonSRX rightMaster = new TalonSRX(Constants.RIGHT_MASTER_PORT);
-  private final TalonSRX rightFollower = new TalonSRX(Constants.RIGHT_FOLLOWER_PORT);
-  private final TalonSRX leftMaster = new TalonSRX(Constants.LEFT_MASTER_PORT);
-  private final TalonSRX leftFollower = new TalonSRX(Constants.LEFT_FOLLOWER_PORT);
+public class DriveTrain extends SubsystemBase { //change to WPI_RX
+  private final WPI_TalonFX rightMaster = new WPI_TalonFX(Constants.RIGHT_MASTER_PORT);
+  private final WPI_TalonFX rightFollower = new WPI_TalonFX(Constants.RIGHT_FOLLOWER_PORT);
+  private final WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.LEFT_MASTER_PORT);
+  private final WPI_TalonFX leftFollower = new WPI_TalonFX(Constants.LEFT_FOLLOWER_PORT);
+
+  private final MotorControllerGroup rightMotor = new MotorControllerGroup(rightMaster, rightFollower);
+  private final MotorControllerGroup leftMotor = new MotorControllerGroup(leftMaster, leftFollower);
+  private final DifferentialDrive drivetrain = new DifferentialDrive(leftMotor, rightMotor);
 
   /** Creates a new DriveTrain. */
-  public DriveTrain() {
-    rightMaster.set(ControlMode.PercentOutput, 0);
-    rightFollower.set(ControlMode.PercentOutput, 0);
-    leftMaster.set(ControlMode.PercentOutput, 0);
-    leftFollower.set(ControlMode.PercentOutput, 0);
+  public DriveTrain() { //differiental drive
+    rightMaster.configFactoryDefault();
+    rightFollower.configFactoryDefault();
+    leftMaster.configFactoryDefault();
+    leftFollower.configFactoryDefault();
 
-    leftMaster.setInverted(true);
-    leftFollower.setInverted(true);
+    leftMotor.setInverted(true);
+
+    drivetrain.stopMotor();
   }
 
-  public void setLeft(double speed) {
-    leftMaster.set(ControlMode.PercentOutput, speed);
-    leftFollower.set(ControlMode.PercentOutput, speed);
+  public void set(double speed) {
+    drivetrain.tankDrive(speed, speed);
   }
 
-  public void setRight(double speed) {
-    rightMaster.set(ControlMode.PercentOutput, speed);
-    rightFollower.set(ControlMode.PercentOutput, speed);
+  public void arcadeDrive(double ySpeed, double xSpeed) {
+    drivetrain.arcadeDrive(ySpeed, xSpeed);    
   }
 
   public void stop() {
-    rightMaster.set(ControlMode.PercentOutput, 0);
-    rightFollower.set(ControlMode.PercentOutput, 0);
-    leftMaster.set(ControlMode.PercentOutput, 0);
-    leftFollower.set(ControlMode.PercentOutput, 0);
+    drivetrain.stopMotor();
+
+    //set to stopMotor
   }
 
   public double getLeftPosition() {

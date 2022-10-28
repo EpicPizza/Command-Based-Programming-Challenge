@@ -14,7 +14,8 @@ public class Indexer extends SubsystemBase {
   private final CANSparkMax indexer = new CANSparkMax(Constants.INDEXER_PORT, MotorType.kBrushless);
   /** Creates a new Indexer. */
   public Indexer() {
-    indexer.restoreFactoryDefaults();
+    indexer.restoreFactoryDefaults(); //set direction
+    indexer.setInverted(false);
   }
 
   public void set(double speed) {

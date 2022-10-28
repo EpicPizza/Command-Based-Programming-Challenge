@@ -12,7 +12,8 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax intake = new CANSparkMax(Constants.INTAKE_PORT, MotorType.kBrushless);
   /** Creates a new Shooter. */
   public Intake() {
-    intake.restoreFactoryDefaults();
+    intake.restoreFactoryDefaults(); //set direction
+    intake.setInverted(false);
   }
 
   public void set(double speed) {

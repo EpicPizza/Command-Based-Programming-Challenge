@@ -17,6 +17,34 @@ public final class Constants {
     public static final int LEFT_FOLLOWER_PORT = 4;
     public static final int RIGHT_MASTER_PORT = 1;
     public static final int RIGHT_FOLLOWER_PORT = 2;
+    public static final int kShooterMotorPortLeft = 20;
+    public static final int kShooterMotorPortRight = 21;
+    public static final int kHoodMotorPort = 22;
+    public static final int kMotorLeftPort = 5;
+    public static final int kMotorRightPort = 14;
+    public static final boolean kClimberLeftInvert = false;
+    public static final boolean kClimberRightInvert = false;
+    public static final int kDriverController1Port = 0;
+    public static final int kDriverController2Port = 1;
+    public static final int kLeftX = 0;
+    public static final int kLeftY = 1;
+    public static final int kLeftTrigger = 2;
+    public static final int kRightTrigger = 3;
+    public static final int kRightX = 4;
+    public static final int kRightY = 5;
+    public static final int kA = 1;
+    public static final int kB = 2;
+    public static final int kX = 3;
+    public static final int kY = 4;
+    public static final int kLeftBumper = 5;
+    public static final int kRightBumper = 6;
+
+    public static final double kDeadZone = 0.1;
+
+    public static final boolean kShooterInvert = false;
+    public static final boolean kHoodInvert = false;
+    public static final double kDistancePerPulse = 0.1016 * Math.PI / 2048;
+
 
     public static final int DERI_CONSTANT = 3;
     public static final double PROP_CONSTANT = 0.3;

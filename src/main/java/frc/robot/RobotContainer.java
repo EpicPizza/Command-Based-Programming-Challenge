@@ -7,19 +7,23 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
-
+import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ArmPosition;
 import frc.robot.commands.DriveDistance;
 import frc.robot.commands.DriveJoystick;
 import frc.robot.commands.IndexerTimed;
 import frc.robot.commands.IntakeTimed;
+import frc.robot.commands.ShooterSpeed;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,10 +41,17 @@ public class RobotContainer {
   private final DriveJoystick driveJoystick;
   private final XboxController driverJoystick;
 
+  private Climber climber;
+  private Hood hood;
+  private Shooter shooter;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     driveTrain = new DriveTrain();
+    climber = new Climber();
+    hood = new Hood();
+    shooter = new Shooter();
 
     driveDistance = new DriveDistance(driveTrain);
     driveDistance.addRequirements(driveTrain);
@@ -52,10 +63,14 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(driveJoystick);
 
     arm = new Arm();
+
+    
     
     indexer = new Indexer();
 
     intake = new Intake();
+    climber.setDefaultCommand(new RunCommand(() -> climber.rotateArms(driverJoystick.getRawAxis(Constants.kLeftY), true), climber));
+    
 
     // Configure the button bindings
     configureButtonBindings();
@@ -71,6 +86,7 @@ public class RobotContainer {
     JoystickButton indexButton = new JoystickButton(driverJoystick, XboxController.Button.kA.value);
     indexButton.whenPressed(new IndexerTimed(indexer, 3));
 
+
     JoystickButton intakeButton = new JoystickButton(driverJoystick, XboxController.Button.kB.value);
     intakeButton.whenPressed(new IntakeTimed(intake, 3));
 
@@ -79,6 +95,14 @@ public class RobotContainer {
 
     JoystickButton armUp = new JoystickButton(driverJoystick, XboxController.Button.kY.value);
     armUp.whenPressed(new ArmPosition(arm, 0));
+
+    JoystickButton shooterOn = new JoystickButton(driverJoystick, XboxController.Button.kLeftBumper.value);
+    shooterOn.whenPressed(new ShooterSpeed(shooter, 0.4));
+
+    JoystickButton shooterOff = new JoystickButton(driverJoystick, XboxController.Button.kLeftBumper.value);
+    shooterOff.whenPressed(new ShooterSpeed(shooter, 0));
+
+    
   }
 
   /**

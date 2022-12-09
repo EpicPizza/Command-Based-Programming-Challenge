@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +18,11 @@ public class Arm extends SubsystemBase {
   RelativeEncoder encoder = arm.getEncoder();
   public Arm() {
     arm.restoreFactoryDefaults(); //set direction
-    arm.setInverted(false);
+    arm.setInverted(true);
+    arm.enableSoftLimit(SoftLimitDirection.kForward, true);
+    arm.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    arm.setSoftLimit(SoftLimitDirection.kForward, 13);
+    arm.setSoftLimit(SoftLimitDirection.kReverse, 0);
   }
 
   public void reset() {
@@ -38,6 +43,10 @@ public class Arm extends SubsystemBase {
 
   public void stop() {
     arm.stopMotor();
+  }
+
+  public double getVoltage() {
+    return arm.getAppliedOutput();
   }
 
   @Override

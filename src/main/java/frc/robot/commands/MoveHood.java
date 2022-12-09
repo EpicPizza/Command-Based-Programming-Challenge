@@ -1,16 +1,18 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Hood;
 
 public class MoveHood extends CommandBase {
   /** Creates a new MoveHood. */
   private Hood hood;
-  private double targetPos;
+  private final XboxController xboxController;
 
-  public MoveHood(Hood hood, double target) {
+  public MoveHood(Hood hood, XboxController XboxController) {
     this.hood = hood;
-    targetPos = target;
+    xboxController = XboxController;
     addRequirements(hood);
   }
 
@@ -21,8 +23,13 @@ public class MoveHood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // targetPos = SmartDashboard.getNumber("Target Hood", 0);
-    hood.setPosition(targetPos);
+    double x = -1 * xboxController.getRawAxis(Constants.LEFT_Y2);
+    if ((hood.getPosition() >= -1 && x <= 0) || (hood.getPosition() <= 120 && x >= 0)) {
+      hood.setOutput(x * Constants.hoodSpeed, true);
+    }
+    else {
+      hood.setOutput(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -34,6 +41,6 @@ public class MoveHood extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return hood.atPosition(1);
+    return false;
   }
 }

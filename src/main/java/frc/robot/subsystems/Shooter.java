@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
+// import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -19,8 +19,8 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
 
-  private final WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.kShooterMotorPortLeft);
-  private final WPI_TalonFX rightFollower = new WPI_TalonFX(Constants.kShooterMotorPortRight);
+  private final WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.kShooterMotorPortRight);
+  // private final WPI_TalonFX rightFollower = new WPI_TalonFX(Constants.kShooterMotorPortRight);
 
   private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(0, 12/32.8, 0);
 
@@ -32,10 +32,10 @@ public class Shooter extends SubsystemBase {
     leftMaster.setInverted(Constants.kShooterInvert);
     leftMaster.setNeutralMode(NeutralMode.Coast);
 
-    rightFollower.configFactoryDefault();
-    rightFollower.follow(leftMaster);
-    rightFollower.setInverted(InvertType.OpposeMaster);
-    rightFollower.setNeutralMode(NeutralMode.Coast);
+    // rightFollower.configFactoryDefault();
+    // rightFollower.follow(leftMaster);
+    // rightFollower.setInverted(InvertType.OpposeMaster);
+    // rightFollower.setNeutralMode(NeutralMode.Coast);
 
     TalonFXConfiguration configs = new TalonFXConfiguration();
 
@@ -43,12 +43,13 @@ public class Shooter extends SubsystemBase {
     configs.statorCurrLimit = new StatorCurrentLimitConfiguration(true, 240, 255, 5);
 
     leftMaster.configAllSettings(configs);
-    rightFollower.configAllSettings(configs);
+    // rightFollower.configAllSettings(configs);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
     if (stop) {
       setVoltage(0);
     } else {
@@ -70,7 +71,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setVoltage(double volts) {
-    leftMaster.setVoltage(volts); 
+    leftMaster.setVoltage(volts * 12);
+  }
+
+  public void setOutput(double speed) {
+    leftMaster.set(speed);
   }
 
   public boolean atSpeed(double targetSpeed, double tolerance) {

@@ -28,17 +28,25 @@ public class ArmPosition extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("Arm Accessed");
+    finish = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Current Position: " + arm.getPosition());
+    System.out.println("Target Position: " + position);
+    System.out.println("Motor Voltage: " + arm.getVoltage());
     if(direction && arm.getPosition() <= position) {
-      arm.set(Constants.ARM_SPEED);
-    } if(!direction && arm.getPosition() >= position) {
-      arm.set(-Constants.ARM_SPEED);
-    } else {
-      arm.stop();
+      arm.set(0.2);
+    }
+    else if(!direction && arm.getPosition() >= position) {
+      arm.set(-1 * 0.4);
+    }
+    else {
+      arm.set(0);
       finish = true;
     }
   }
@@ -46,7 +54,7 @@ public class ArmPosition extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.stop();
+    arm.set(0);
   }
 
   // Returns true when the command should end.

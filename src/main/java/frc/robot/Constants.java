@@ -17,7 +17,6 @@ public final class Constants {
     public static final int LEFT_FOLLOWER_PORT = 4;
     public static final int RIGHT_MASTER_PORT = 1;
     public static final int RIGHT_FOLLOWER_PORT = 2;
-    public static final int kShooterMotorPortLeft = 20;
     public static final int kShooterMotorPortRight = 21;
     public static final int kHoodMotorPort = 22;
     public static final int kMotorLeftPort = 5;
@@ -62,10 +61,16 @@ public final class Constants {
     public static final int ARM_PORT = 23;
     public static final double ARM_UPPER_LIMIT = 9;
     public static final double ARM_LOWER_LIMIT = 0;
-    public static final double ARM_SPEED = 0.1;
+    public static final double ARM_SPEED = 0.3;
 
     public static final int JOYSTICK_NUMBER = 0;
-    public static final int XBOX_LEFT_X_AXIS = 2;
-    public static final double ARCADE_SPEED = 0.5;
-    public static final int XBOX_LEFT_Y_AXIS = 4;
+    public static final int XBOX_LEFT_Y_AXIS = 1;
+    public static final double ARCADE_SPEED = 0.4;
+    public static final double TURNING_ARCADE_SPEED = 0.4;
+    public static final int XBOX_RIGHT_X_AXIS = 4;
+    public static final int JOYSTICK_NUMBER_2 = 1;
+    public static final int LEFT_Y2 = 1;
+    public static final double KP = 1;
+    public static final double KD = 1.05;
+    public static double hoodSpeed = 0.3;
 }

@@ -25,6 +25,7 @@ public class IndexerTimed extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    finish = false;
     timer.reset();
     timer.start();
   }

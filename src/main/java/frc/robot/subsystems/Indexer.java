@@ -23,7 +23,8 @@ public class Indexer extends SubsystemBase {
   }
 
   public void stop() {
-    indexer.stopMotor();
+    indexer.set(0);
+    // indexer.stopMotor();
   }
 
   @Override

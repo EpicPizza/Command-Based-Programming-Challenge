@@ -12,7 +12,9 @@ import frc.robot.subsystems.DriveTrain;
 public class DriveDistance extends CommandBase {
   private final DriveTrain driveTrain;
   private boolean finish = false;
-  private double reverse;
+  double rateOfChange;
+  double error;
+  double speed;
   private double previousError;
   private double previousSpeed;
   /** Creates a new DriveDistance. */
@@ -25,46 +27,40 @@ public class DriveDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    previousError = 0;
+    previousSpeed = 0;
     driveTrain.reset();
-    reverse = Constants.REVERSED;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(driveTrain.getLeftPosition() < Constants.UNITS_PER_ROTATION * 6) {
-      double error = ((reverse * 6) - (driveTrain.getLeftPosition() / Constants.UNITS_PER_ROTATION));
-      double rateOfChange = ((error - previousError) / 0.02) * Constants.DERI_CONSTANT; //0.2
-      if(reverse == 1) {
-        rateOfChange = Math.abs(rateOfChange);
-      } else if(reverse == -1) {
-        rateOfChange = -Math.abs(rateOfChange);
+    System.out.println("Position: " + driveTrain.getRightPosition() * 11 / 120);
+    if(driveTrain.getRightPosition() * 11 / 120 < Constants.UNITS_PER_ROTATION * 6) {
+      error = (20 - driveTrain.getRightPosition() * 11 / 120 / Constants.UNITS_PER_ROTATION);
+      rateOfChange = (previousError - error) / 6;
+      rateOfChange = Math.abs(rateOfChange);
+      speed = Constants.KP * error + rateOfChange * Constants.KD;; //2
+      if (speed - previousSpeed > 0.01) {
+        speed = previousSpeed + 0.01;
       }
-      SmartDashboard.putNumber("RateOfChange", rateOfChange);
-      double speed = (Constants.PROP_CONSTANT * error) + rateOfChange; //2
-      if(reverse == -1) {
-        if(speed < -0.3) {
-          speed = -0.3;
-        }
-      } else {
-        if(speed > 0.3) {
-          speed = 0.3;
-        }
+      if (speed - previousSpeed < -0.01) {
+        speed = previousSpeed - 0.01;
       }
-      if(((reverse * speed) - (reverse * previousSpeed)) > 0.01) {
-        System.out.println("Acceleration Limited");
-        speed = previousSpeed + (reverse * 0.01);
-      } 
+      if(speed < -0.5) {
+        speed = -0.5;
+      }
+      if(speed > 0.5) {
+        speed = 0.5;
+      }
       driveTrain.set(speed);
       previousError = error;
       previousSpeed = speed;
-      SmartDashboard.putNumber("Speed", speed);
-      SmartDashboard.putNumber("Error", error);
+      System.out.println("Error: " + error + "\tPosition: " + driveTrain.getRightPosition() * 11 / 120 + "\tSpeed: " + speed);
     } else {
       driveTrain.stop();
       finish = true;
     }
-    SmartDashboard.putNumber("Percentage", ((driveTrain.getLeftPosition() / Constants.UNITS_PER_ROTATION) / 6));
   }
 
   // Called once the command ends or is interrupted.

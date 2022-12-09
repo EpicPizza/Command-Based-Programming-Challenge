@@ -27,7 +27,7 @@ public class DriveJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.arcadeDrive(xboxController.getRawAxis(Constants.XBOX_LEFT_Y_AXIS) * Constants.ARCADE_SPEED, xboxController.getRawAxis(Constants.XBOX_LEFT_X_AXIS));
+    driveTrain.arcadeDrive(xboxController.getRawAxis(Constants.XBOX_LEFT_Y_AXIS) * Constants.ARCADE_SPEED * -1, xboxController.getRawAxis(Constants.XBOX_RIGHT_X_AXIS) * Constants.TURNING_ARCADE_SPEED);
   }
 
   // Called once the command ends or is interrupted.
